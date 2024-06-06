@@ -6,13 +6,9 @@ import userModel from '../models/User.js'
 
 export const getAll = async (req, res) => {
   try {
-    // const comments = await CommentModel.find().populate('user').exec();
+    const comments = await CommentModel.find().populate('user').exec();
 
-    // res.json(comments)
-
-    res.json({
-			success: true,
-		})
+    res.json(comments)
   } catch (err) {
     console.log(err);
     res.status(500).json({
