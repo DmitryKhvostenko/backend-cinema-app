@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { format } from 'date-fns'
+import { formatInTimeZone } from 'date-fns-tz'
 
 import userModel from '../models/User.js'
 
@@ -31,7 +32,12 @@ export const register = async (req, res) => {
 
 		res.json({
 			...userData,
-			createdAt: format(new Date(userData.createdAt), 'dd.MM.yyyy'),
+			createdAt: formatInTimeZone(
+				new Date(comment.createdAt),
+				'Europe/Kiev',
+				'dd.MM.yyyy'
+			),
+			// createdAt: format(new Date(userData.createdAt), 'dd.MM.yyyy'),
 			token,
 		})
 	} catch (err) {

@@ -13,7 +13,7 @@ import {commentValidation} from './validations/comment.js';
 
 mongoose
 	.connect(
-		process.env.MONGODB_URI ||
+		// process.env.MONGODB_URI ||
 			'mongodb+srv://admin:UY8hLIJGZFBDhb9j@cluster0.pc4sdyr.mongodb.net/cinema-app?retryWrites=true&w=majority&appName=Cluster0'
 	)
 	.then(() => {
@@ -60,7 +60,7 @@ app.post('/comments', checkAuth, commentValidation, handleValidationErrors, Comm
 app.delete('/comments/:id', checkAuth, CommentController.remove)
 app.patch('/comments/:id', checkAuth, commentValidation, handleValidationErrors, CommentController.update)
 
-app.listen(process.env.PORT || 4444, (err) => {
+app.listen(4444, (err) => {
   if (err) {
     return console.log(err)
   }

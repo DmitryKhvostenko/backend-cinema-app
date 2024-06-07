@@ -1,5 +1,7 @@
 import CommentModel from '../models/Comment.js'
 import { format } from 'date-fns';
+import { formatInTimeZone } from 'date-fns-tz'
+
 
 import userModel from '../models/User.js'
 
@@ -24,10 +26,15 @@ export const getByFilmId = async (req, res) => {
       path: 'user',
       select: '-email -passwordHash' 
     }).exec();
-    const formattedComments = comments.map(comment => ({
-      ...comment.toJSON(),
-      createdAt: format(comment.createdAt, 'dd.MM.yyyy HH:mm'),
-    }));
+    const formattedComments = comments.map((comment) => ({
+			...comment.toJSON(),
+			// createdAt: format(comment.createdAt, 'dd.MM.yyyy HH:mm'),
+			createdAt: formatInTimeZone(
+				new Date(comment.createdAt),
+				'Europe/Kiev',
+				'dd.MM.yyyy HH:mm'
+			),
+		}))
 
     res.json(formattedComments);
   } catch (err) {
@@ -49,7 +56,12 @@ export const getByUserId = async (req, res) => {
 			.exec()
 		const formattedComments = comments.map((comment) => ({
 			...comment.toJSON(),
-			createdAt: format(comment.createdAt, 'dd.MM.yyyy HH:mm'),
+			// createdAt: format(comment.createdAt, 'dd.MM.yyyy HH:mm'),
+			createdAt: formatInTimeZone(
+				new Date(comment.createdAt),
+				'Europe/Kiev',
+				'dd.MM.yyyy HH:mm'
+			),
 		}))
 
 		res.json(formattedComments)
