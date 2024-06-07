@@ -14,7 +14,7 @@ import {commentValidation} from './validations/comment.js';
 
 mongoose
 	.connect(
-		// process.env.MONGODB_URI ||
+		process.env.MONGODB_URI ||
 			'mongodb+srv://admin:UY8hLIJGZFBDhb9j@cluster0.pc4sdyr.mongodb.net/cinema-app?retryWrites=true&w=majority&appName=Cluster0'
 	)
 	.then(() => {
