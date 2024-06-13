@@ -2,8 +2,9 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import { format } from 'date-fns'
 import { formatInTimeZone } from 'date-fns-tz'
-
+import cloudinary from '../cloudinary.js'
 import userModel from '../models/User.js'
+
 
 export const register = async (req, res) => {
 	try {
@@ -113,20 +114,20 @@ export const getMe = async (req, res) => {
 	}
 }
 
-export const update = async (req, res) => {
+export const updateAvatar = async (req, res) => {
 	try {
 		const userId = req.params.id
-		const { login, avatarUrl } = req.body
 
-		await userModel.updateOne(
-			{
-				_id: userId,
-			},
-			{
-				login: login,
-				avatarUrl: avatarUrl,
-			}
-		)
+		let updatedAvatarUrl = ''
+
+		if (req.file) {
+			const cloudinaryUpload = await cloudinary.uploader.upload(
+				req.file.path
+			)
+			updatedAvatarUrl = cloudinaryUpload.url
+		}
+
+		await userModel.updateOne({ _id: userId }, { avatarUrl: updatedAvatarUrl })
 
 		const updatedUser = await userModel.findById(userId)
 
@@ -134,7 +135,26 @@ export const update = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Не удалось изменить профиль',
+			message: 'Не удалось изменить аватар',
+		})
+	}
+}
+
+// Функция для обновления логина
+export const updateLogin = async (req, res) => {
+	try {
+		const userId = req.params.id
+		const { login } = req.body
+
+		await userModel.updateOne({ _id: userId }, { login: login })
+
+		const updatedUser = await userModel.findById(userId)
+
+		res.json(updatedUser)
+	} catch (err) {
+		console.log(err)
+		res.status(500).json({
+			message: 'Не удалось изменить логин',
 		})
 	}
 }
