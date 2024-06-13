@@ -33,7 +33,7 @@ export const register = async (req, res) => {
 		res.json({
 			...userData,
 			createdAt: formatInTimeZone(
-				new Date(comment.createdAt),
+				new Date(userData.createdAt),
 				'Europe/Kiev',
 				'dd.MM.yyyy'
 			),
