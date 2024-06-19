@@ -5,7 +5,6 @@ import { formatInTimeZone } from 'date-fns-tz'
 import cloudinary from '../cloudinary.js'
 import userModel from '../models/User.js'
 
-
 export const register = async (req, res) => {
 	try {
 		const password = req.body.password
@@ -82,7 +81,15 @@ export const login = async (req, res) => {
 
 		const { passwordHash, ...userData } = user._doc
 
-		res.json({ ...userData, token })
+		res.json({
+			...userData,
+			createdAt: formatInTimeZone(
+				new Date(userData.createdAt),
+				'Europe/Kiev',
+				'dd.MM.yyyy'
+			),
+			token
+		})
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
@@ -104,7 +111,11 @@ export const getMe = async (req, res) => {
 
 		res.json({
 			...userData,
-			createdAt: format(new Date(userData.createdAt), 'dd.MM.yyyy'),
+			createdAt: formatInTimeZone(
+				new Date(userData.createdAt),
+				'Europe/Kiev',
+				'dd.MM.yyyy'
+			),
 		})
 	} catch (err) {
 		console.log(err)
@@ -121,9 +132,7 @@ export const updateAvatar = async (req, res) => {
 		let updatedAvatarUrl = ''
 
 		if (req.file) {
-			const cloudinaryUpload = await cloudinary.uploader.upload(
-				req.file.path
-			)
+			const cloudinaryUpload = await cloudinary.uploader.upload(req.file.path)
 			updatedAvatarUrl = cloudinaryUpload.url
 		}
 
