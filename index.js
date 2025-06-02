@@ -74,13 +74,12 @@ app.patch(
 )
 
 
-// app.post('/upload', checkAuth, upload.single('image'), (req, res) => {
-//   res.json({
-//     url: `/uploads/${req.file.originalname}`,
-//   })
-// })
-
-// app.post('/upload', checkAuth, upload.single('image'), UserController.upload)
+app.post(
+	'/upload',
+	checkAuth,
+	upload.single('image'),
+	UserController.updateAvatar
+)
 
 app.get('/comments', CommentController.getAll)
 app.get('/comments/film/:filmId', CommentController.getByFilmId)
