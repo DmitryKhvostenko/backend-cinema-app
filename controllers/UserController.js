@@ -55,7 +55,7 @@ export const login = async (req, res) => {
 		if (!user) {
 			return res.status(404).json({
 				message:
-					'Ошибка авторизации! Пожалуйста, проверьте правильность почты или пароля',
+					'Помилка авторизації',
 			})
 		}
 
@@ -66,8 +66,7 @@ export const login = async (req, res) => {
 
 		if (!isValidPass) {
 			return res.status(400).json({
-				message:
-					'Ошибка авторизации! Пожалуйста, проверьте правильность почты или пароля',
+				message: 'Помилка авторизації',
 			})
 		}
 
@@ -93,7 +92,7 @@ export const login = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Не удалось авторизоваться',
+			message: 'Не вдалось зареєструватись',
 		})
 	}
 }
@@ -104,7 +103,7 @@ export const getMe = async (req, res) => {
 
 		if (!user) {
 			return res.status(404).json({
-				message: 'Пользователь не найден',
+				message: 'Користувача не знайдено',
 			})
 		}
 		const { passwordHash, ...userData } = user._doc
@@ -120,7 +119,7 @@ export const getMe = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Нет доступа',
+			message: 'Відсутній доступ',
 		})
 	}
 }
@@ -144,12 +143,11 @@ export const updateAvatar = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Не удалось изменить аватар',
+			message: 'Не вдалось змінити аватар',
 		})
 	}
 }
 
-// Функция для обновления логина
 export const updateLogin = async (req, res) => {
 	try {
 		const userId = req.params.id
@@ -163,7 +161,7 @@ export const updateLogin = async (req, res) => {
 	} catch (err) {
 		console.log(err)
 		res.status(500).json({
-			message: 'Не удалось изменить логин',
+			message: 'Не вдалось змінити логін',
 		})
 	}
 }

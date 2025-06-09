@@ -64,15 +64,7 @@ app.post(
 
 app.get('/auth/me', checkAuth, UserController.getMe)
 
-app.patch('/auth/edit/login/:id', checkAuth, UserController.updateLogin)
-
-app.patch(
-	'/auth/edit/avatar/:id',
-	checkAuth,
-	upload.single('image'),
-	UserController.updateAvatar
-)
-
+app.patch('/auth/edit/:id', checkAuth, UserController.updateLogin)
 
 app.post(
 	'/upload',
